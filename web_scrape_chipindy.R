@@ -44,7 +44,6 @@ for (i in 1:length(full_dataset)) {
 
 single_df <- data.frame()
 for (i in 1:length(full_dataset)){
-  single_df <- single_df %>% rbind(full_dataset[[i]], single_df)
+  single_df <- single_df %>% rbind(full_dataset[[i]])
 }
-single_df %>% View()
 export(single_df,"D:/Programming/resource_data_chipindy.csv")
