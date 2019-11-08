@@ -1,7 +1,7 @@
 library(rvest)
 library(tidyverse)
 library(stringr)
-
+library(rio)
 #retreive all resource category pages
 res_links <- read_html("http://www.handbookofhelp.org/clothing-pantries/") %>%  html_nodes("li") %>% str_extract('http://[\\w:[[:punct:]]]*/')
 res_links <- res_links[4:19]
@@ -41,3 +41,10 @@ full_dataset <- map(res_links, scrape_hfh)
 for (i in 1:length(full_dataset)) {
   assign(paste0("hfh_", i), as.data.frame(full_dataset[[i]]))
 }
+
+single_df <- data.frame()
+for (i in 1:length(full_dataset)){
+  single_df <- single_df %>% rbind(full_dataset[[i]], single_df)
+}
+single_df %>% View()
+export(single_df,"D:/Programming/resource_data_chipindy.csv")
