@@ -9,4 +9,4 @@ This R program uses social services data to create an app intended to better inf
 
 Also included is a web scraping program that was used to pull Chip Indy Handbook for Help Data (http://www.handbookofhelp.org/)
 ### Goal:
-To improve connection to care and health of homeless community members through information.
+To improve connection to care and health of homeless community members through better access to resource information.
