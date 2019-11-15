@@ -35,28 +35,58 @@ library(leaflet)
 library(htmltools)
 #library(shinydashboard)
 library(flexdashboard)
+library(stringr)
 
 
-resource_categ <- c("Clothing", "Food Pantry" , "Health Services", "Public Wifi" , 
-                    "Shelter" , "Technology","Transportation")
+
+resource_categ <- c("Clothing Pantry",
+  "Food Pantry",
+  "Healthcare",
+  "Wifi",
+  "Meals",
+  "Employment",
+  "Community Centers",
+  "Mental Health or Substance Use",
+  "Emergency Shelter",
+  "School",
+  "Domestic Violence",
+  "Veterans",
+  "Ex-offender Reentry",
+  "Gov. Aid",
+  "HIV and STDs",
+  "Legal",
+  "Multi-Service")
+
+
 resource_images <- c(
-  "ComunityEvents_white.png",
-  "Meals_white.png",
-  "Healthcare_white.png",
-  "TechnologyWifi_white.png",
-  "Shelter_white.png",
-  "TechnologyWifi_white.png",
-  "Transport_white.png"
+  "ComunityEvents.png",
+  "Meals.png",
+  "Healthcare.png",
+  "TechnologyWifi.png",
+  "Meals.png",
+  "ComunityEvents.png",
+  "Shelter.png",
+  "Healthcare.png",
+  "Shelter.png",
+  "Shelter.png",
+  "ComunityEvents.png",
+  "ComunityEvents.png",
+  "ComunityEvents.png",
+  "Shelter.png",
+  "Healthcare.png",
+  "ComunityEvents.png",
+  "Shelter.png"
   )
 
 # Data pre-processing ----
 #Dat<-import("/Users/Sam/Documents/One Source Indy/Descriptions_Table.xlsx") %>% select(-long,-lat)
-Dat<-import("Descriptions_Table.xlsx") %>% select(-long,-lat)
+Dat<-import("resource_data_chipindy.xlsx") %>% select(-long,-lat)
 Full_adds<-import("full_addresses.xlsx") %>% 
   select(-c(business_desc,contact_phone,contact_email,contact_website,wheelchair_access))
 # create google map link based on google api 
 # (https://developers.google.com/maps/documentation/urls/guide)
-Dat <- Dat %>% mutate(Google_map=paste0("https://www.google.com/maps/search/?api=1&query=",Resource_name)) 
+Dat <- Dat %>% mutate(Google_map=paste0("https://www.google.com/maps/search/?api=1&query=",str_replace(str_replace(Resource_name, "&","and"), " ", "+"))) 
+#Dat <- Dat %>% mutate(Google_map=paste0("https://www.google.com/maps/search/?api=1&query=",Resource_name))
 Dat <- Dat %>% left_join(Full_adds,by=c("Resource_name"="business_name")) %>% mutate(All="Y")
 
 Dat2 <- import("event_data.xlsx")
@@ -108,7 +138,7 @@ ui <- fluidPage(
         br(),
         icon("fas fa-question-circle"),"Step 1: ",
         # Input 1: Selector for variable to plot against category of interest ----
-        checkboxGroupInput("variable_1", "What resources you are looking for?",
+        radioButtons("variable_1", "What resources you are looking for?",
                            choiceNames = mapply(resource_categ, resource_images, FUN = function(name, imageURL) {
                              tagList(
                                tags$img(src=imageURL, width=30, height=30),
@@ -116,6 +146,7 @@ ui <- fluidPage(
                              )
                            }, SIMPLIFY = FALSE, USE.NAMES = FALSE),
                            choiceValues = resource_categ
+                           #choices =c()
                            ),
         # checkboxGroupInput("variable_1", "Select what kinds of resource you are looking for?",
         #                choices=c(
@@ -146,12 +177,16 @@ ui <- fluidPage(
         #             ),
       icon("fas fa-question-circle"),"Step 2: ", 
       # Input 2: Selector for variable to select column ----
-      checkboxGroupInput("variable_2", label= "What info you would like?",
+      checkboxGroupInput("variable_2", label= "What additional info you would like?",
                      choices=c(
                               #"Google Map"="Google_map",
+                               "Eligibility",
                                "Website" = "Website",
                                "Phone Number",
-                               "Email"
+                               "Email",
+                               "Fees",
+                               "Hours",
+                               "Address"
                                # "Lat"="lat",
                                # "Lon"="lon"
                      ),
@@ -305,12 +340,16 @@ server <- function(input, output, session) {
   
   output$data <- DT::renderDataTable({ 
    out<-filterData() %>% select(-"lat",-"lon")
-   DT::datatable(out,list(mode = "single", target = "cell"),escape = FALSE)
+   DT::datatable(out,list(#mode = "single",
+                          #target = "cell", 
+     pageLength=3),selection="none", escape = FALSE)
   })
   
   output$data_events <- DT::renderDataTable({ 
     out2<-Dat2
-    DT::datatable(out2,list(mode = "single", target = "cell"),escape = FALSE)
+    DT::datatable(out2,list(#mode = "single",
+                            #target = "cell", 
+                            pageLength=3),selection="none",escape = FALSE)
   })
   
   Map_Dat<- reactive({
