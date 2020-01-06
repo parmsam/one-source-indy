@@ -4,6 +4,7 @@ https://www.onesourceindy.org/
 ### Shiny App:
 https://parmsam.shinyapps.io/one_source_indy/
 
+![app_screenshot](app_screenshot.png)
 ### Quick info:
 This R program uses social services data to create an open source app intended to better inform in-need homeless or unstably-housed individuals  living in Indianapolis on what is available in our communities. App code is in the prototype folder. 
 
