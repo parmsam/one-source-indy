@@ -11,3 +11,5 @@ This R program uses social services data to create an open source app intended t
 Also included is a web scraping program that was used to pull Chip Indy Handbook for Help Data (http://www.handbookofhelp.org/)
 ### Goal:
 To improve connection to care and health of homeless community members through better access to resource information.
+
+#### Main page picture source: https://publicdomainpictures.net/en/view-image.php?image=293256&picture=homeless-people
