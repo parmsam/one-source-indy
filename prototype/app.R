@@ -130,15 +130,15 @@ ui <- fluidPage(
       sidebarPanel(
         icon("fas fa-globe americas"),"Quick Info and Updates: ", br(),
         tags$li("One Source Indy is a Community Resource Tool for Homeless or Unstably Housed Individuals living in Indianapolis."),
-        tags$li("This is a volunteer project still in development. Please visit the About tab to learn more."),
+        tags$li("This is a volunteer project that uses Indianapolis community resource data. All data is provisional and based on 2019 Community Resource Data."),
         tags$li("There are currently",tags$u(length(unique(Dat$Resource_name))),"unique resources in this app."),
-        tags$li("As an alternative: Please use the free", tags$a("IN 211 Resource Tool",href="https://in211.communityos.org/"),"to connect with resources across all of Indiana or dial 2-1-1 to connect with an IN 211 Community Navigator." ),
+        tags$li("As an alternative, please use the free", tags$a("IN 211 Resource Tool",href="https://in211.communityos.org/"),"to connect with resources across all of Indiana or dial 2-1-1 to connect with an IN 211 Community Navigator." ),
        
         #tags$li("Map available below"),
         br(),
         icon("fas fa-question-circle"),"Step 1: ",
         # Input 1: Selector for variable to plot against category of interest ----
-        radioButtons("variable_1", "What resources you are looking for?",
+        radioButtons("variable_1", "What resource are you looking for?",
                            choiceNames = mapply(resource_categ, resource_images, FUN = function(name, imageURL) {
                              tagList(
                                tags$img(src=imageURL, width=30, height=30),
@@ -177,16 +177,17 @@ ui <- fluidPage(
         #             ),
       icon("fas fa-question-circle"),"Step 2: ", 
       # Input 2: Selector for variable to select column ----
-      checkboxGroupInput("variable_2", label= "What additional info you would like?",
+      checkboxGroupInput("variable_2", label= "What info would you like?",
                      choices=c(
                               #"Google Map"="Google_map",
-                               "Eligibility",
-                               "Website" = "Website",
-                               "Phone Number",
+                               "Address",
                                "Email",
                                "Fees",
+                               "Eligibility",
                                "Hours",
-                               "Address"
+                               "Phone Number",
+                               "Website" = "Website"
+                               
                                # "Lat"="lat",
                                # "Lon"="lon"
                      ),
@@ -208,7 +209,7 @@ ui <- fluidPage(
       #               ),
       # Input 3: Selector for Resource name variable to filter by ----
       icon( "fas fa-globe americas" ),"Search ", 
-      selectInput("variable_3", "Optional: Pick the single place you want more information on",
+      selectInput("variable_3", "Optional: Pick a single resource you want more info on.",
                    #choices=list("",name = c("Cho"="",unique(Dat$Resource_name))),
                    choices=c("Choose one"="","All",sort(unique(Dat$Resource_name))),
                    #options = list(placeholder = 'Please select an option below'),
@@ -235,17 +236,19 @@ ui <- fluidPage(
     ),
     #second tab called about tab
     tabPanel("Events",   # Information on project,
-             h4("Real-time info on upcoming events will go here."),
+             h4("Real-time info on upcoming events will go here"),
              DT::dataTableOutput("data_events")
              ),
     #second tab called about tab
       tabPanel("About",   # Information on project,
                h4("About this app:"),
                div(
-                 tags$p("This is a volunteer-led project still in development.",style = "color:red"),
-                 tags$p("This application will freely provide information on community resources publically available in Indianapolis, IN."),
-                 tags$p("The goal is to better inform homeless or unstably housed individuals in-need living in Indianapolis on what is available in our communities."),
-                 tags$p("This app will hold information on the following:"),
+                 tags$p("This R shiny app uses Indianapolis community resource data to create an open source app to better inform in-need homeless or unstably-housed individuals 
+                        living in Indianapolis on resources available in their community.",style = "color:black"),
+                 tags$p("The goal was to better inform homeless or unstably housed individuals in-need living in Indianapolis on what is available in our communities. Also, the prototype 
+                 was created to show how publicly available resource data can be used with R shiny, to potentially collaborate with Indianapolis homeless outreach organizations, and to encourage others to develop similar applications for social 
+                        good."),
+                 tags$p("This app holds info on the following:"),
                  tags$ul(
                    tags$li("Shelters"),
                    tags$li("Local food banks"),
@@ -254,41 +257,33 @@ ui <- fluidPage(
                    tags$li("Public libraries"),
                    tags$li("And many other local resources")
                  ),
-                 tags$p("Use the box on the left of the 'application' tab to choose what is shown. Information can be selected by following the steps."),
+                 tags$p("Use the box on the left of the 'application' tab to choose what is shown. info can be selected by following the steps."),
                #p("Please visit", tags$a("https://www.onesourceindy.org/", href="https://www.onesourceindy.org/"),
                  #"for more info. All information is provisional."),
                hr(),
                h4("Data Sources and Source Code:"),
-               p("Data is taken from an assessment of community resources by",
-                 tags$a("One Source Indy.",href="https://www.onesourceindy.org")),
-               tags$p("The following public resources were also consulted:"),
+               p("Data was taken from an assessment and webscraping of community resource information."#,
+                 #tags$a("One Source Indy.",href="https://www.onesourceindy.org")
+                 ),
+               tags$p("The following public resources were consulted:"),
                tags$ul(
-                 tags$li(tags$a("CHIP 2019 Handbook of Help",href="https://www.chipindy.org/")),
-                 tags$li(tags$a("FSSA DDRS Community Resource Guide",
-                         href="https://www.in.gov/fssa/files/Indianapolis%20Lynhurst%20Area%20Office%20Resource%20Guide.pdf"))
+                 tags$li(tags$a("CHIP 2019 Handbook of Help",href="https://www.chipindy.org/"))#,
+                 #tags$li(tags$a("FSSA DDRS Community Resource Guide",
+                #         href="https://www.in.gov/fssa/files/Indianapolis%20Lynhurst%20Area%20Office%20Resource%20Guide.pdf"))
                ), 
-               p("All data is provisional."),
-               p("Code will be made publically available on my github:",tags$a("https://github.com/parmsam", href="https://github.com/parmsam")),
+               p("All data is provisional and based on 2019 Community Resource Data."),
+               p("Source code available on my github:",tags$a("https://github.com/parmsam", href="https://github.com/parmsam")),
                hr(),
-               h4("Authors:"),
+               h4("Team:"),
                #first author:
-               tags$p("Sam Parmar, " , tags$a("parmartsam@gmail.com", href="mailto:parmartsam@gmail.com")),
+               tags$p("Sam Parmar " , tags$a("", href="mailto:")),
                #second author:
-               tags$p("Derris Ross, " , tags$a("derrisross@gmail.com", href="mailto:derrisross@gmail.com")),
-               #tags$p("Sam Parmar, " , tags$a("parmartsam@gmail.com", href="mailto:parmartsam@gmail.com"))
+               tags$p("Derris Ross " , tags$a("", href="mailto:")),
+               #tags$p("Sam Parmar, " , tags$a("", href="mailto:parmartsam@gmail.com"))
                #third author:
                tags$p("Sherri Huang " , tags$a("", href="mailto:")),
                tags$p("Joshua Elkins " , tags$a("", href="mailto:")),
-               hr(),
-               h4("Feedback"),
-               div(
-                 tags$p("Got any feedback? Please send feedback on One Source Indy to",
-                        tags$a(href = "mailto:parmartsam@gmail.com", "parmartsam@gmail.com")),
-                 tags$p("Please mention the following in the subject:"),
-                 tags$ul(
-                   tags$li("The name of the app (One Source Indy)"),
-                   tags$li("Which tab you are referring to")
-                 ))
+               hr()
                  ))
 ))
 
