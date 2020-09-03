@@ -14,4 +14,4 @@ To improve connection to care and health of homeless community members through b
 
 #### Main page picture source: https://publicdomainpictures.net/en/view-image.php?image=293256&picture=homeless-people
 #### Programs:
-`Deployed folder` - Files on shinyapps.io web app
+`deployed` folder - Files on shinyapps.io web app
