@@ -279,7 +279,6 @@ ui <- fluidPage(
                tags$p("Sam Parmar " , tags$a("", href="mailto:")),
                #second author:
                tags$p("Derris Ross " , tags$a("", href="mailto:")),
-               #tags$p("Sam Parmar, " , tags$a("", href="mailto:parmartsam@gmail.com"))
                #third author:
                tags$p("Sherri Huang " , tags$a("", href="mailto:")),
                tags$p("Joshua Elkins " , tags$a("", href="mailto:")),
